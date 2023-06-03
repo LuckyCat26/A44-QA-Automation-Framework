@@ -3,6 +3,7 @@ package Pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 
@@ -12,22 +13,26 @@ public class LoginPage extends BasePage {
         super(givenDriver);
     }
 
-    By emailfield = By.cssSelector("[type='email']");
-    By passwordfield = By.cssSelector("[type='password']");
-    By submitLoginBtn = By.cssSelector("button[type='submit']");
+    @FindBy(css = "[type='email']")
+            private WebElement emailInput;
+    //By emailfield = By.cssSelector("[type='email']");
+    @FindBy(css = "[type='password']")
+            private WebElement passwordInput;
+    //By passwordfield = By.cssSelector("[type='password']");
+    private By submitLoginBtn = By.cssSelector("button[type='submit']");
 
     public void clickLoginBtn() {
         WebElement submitLogin = wait.until(ExpectedConditions.elementToBeClickable(submitLoginBtn));
         submitLogin.click();
     }
     public void enterPassword(String password) {
-        WebElement passwordInput = wait.until(ExpectedConditions.visibilityOfElementLocated(passwordfield));
+        //WebElement passwordInput = wait.until(ExpectedConditions.visibilityOfElementLocated(passwordfield));
         passwordInput.click();
         passwordInput.clear();
         passwordInput.sendKeys(password);
     }
     public void enterEmail(String email) {
-        WebElement emailInput = wait.until(ExpectedConditions.visibilityOfElementLocated(emailfield));
+        //WebElement emailInput = wait.until(ExpectedConditions.visibilityOfElementLocated(emailfield));
         emailInput.click();
         emailInput.clear();
         emailInput.sendKeys(email);

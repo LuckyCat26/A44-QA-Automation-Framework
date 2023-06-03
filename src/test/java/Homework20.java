@@ -33,7 +33,7 @@ public class Homework20 extends BaseTest {
         playlistPage.assertPlaylistNameInHeader(newPlaylist);
 
         playlistPage.clickDeletePlaylistBtn();
-        BasePage.assertSuccessBanner();
+        basePage.assertSuccessBanner();
         basePage.refreshPage();
         Thread.sleep(4000);
         playlistPage.assertPlaylistDeleted(newPlaylist);
