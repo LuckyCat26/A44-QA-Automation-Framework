@@ -13,7 +13,6 @@ public class PlaylistPage extends BasePage {
     public PlaylistPage(WebDriver givenDriver) {
         super(givenDriver);
     }
-
     By myPlaylist = By.cssSelector("[class='playlist playlist']");
     By deleteBtn = By.cssSelector("[title='Delete this playlist']");
     By btnOk = By.cssSelector(".ok");
@@ -27,29 +26,36 @@ public class PlaylistPage extends BasePage {
     By playlistNameEditField = By.cssSelector("input[name='name']");
     By playlist = By.cssSelector(".playlist.playlist>a");
     By newlyCreatedPlaylist = By.cssSelector("#mainWrapper #playlistWrapper");
+    By shuffleBtn = By.cssSelector("#playlistWrapper [data-test='btn-shuffle-all']");
 
     public void clickPlaylist() {
         WebElement playlist = driver.findElement(myPlaylist);
         playlist.click();
     }
-
     public void deleteSelectedPlaylist() {
         JavascriptExecutor js = (JavascriptExecutor) driver;
         WebElement deletePlaylistBtn = driver.findElement(deleteBtn);
         js.executeScript("arguments[0].click();", deletePlaylistBtn);
-    }
 
-    public void clickOkBtn() {
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        WebElement okBtn = driver.findElement(btnOk);
-        js.executeScript("arguments[0].click();", okBtn);
-    }
+        try {
+            boolean btnPresence = driver.findElement(shuffleBtn).isDisplayed();
+            if (btnPresence == true) {
+                WebElement okBtn = driver.findElement(btnOk);
+                js.executeScript("arguments[0].click();", okBtn);
+            }
+        }
+            catch(org.openqa.selenium.NoSuchElementException e){
+            }
+        }
+       // if (driver.findElement(By.cssSelector("#playlistWrapper [data-test='btn-shuffle-all']")).isDisplayed()) {
+           // WebElement okBtn = driver.findElement(btnOk);
+            //js.executeScript("arguments[0].click();", okBtn);
+            //}
 
     public void clickPlusBtn() {
         WebElement plusBtn = wait.until(ExpectedConditions.elementToBeClickable(btnPlus));
         plusBtn.click();
     }
-
     public void clickNewPlaylist() {
         wait.until(ExpectedConditions.elementToBeClickable(newPlaylistCreate)).click();
     }
@@ -61,20 +67,17 @@ public class PlaylistPage extends BasePage {
         inputPlaylistName.clear();
         inputPlaylistName.sendKeys(newPlaylist);
     }
-
     public void assertPlaylistNameInHeader(String newPlaylist) {
         WebElement playlistHeader = driver.findElement(assertPlaylistNameIsInHeader);
         wait.until(ExpectedConditions
                 .textToBePresentInElement(playlistHeader, newPlaylist));
     }
-
     public void clickDeletePlaylistBtn() {
         JavascriptExecutor js = (JavascriptExecutor) driver;
         WebElement deletePlaylistBtn = wait.until(ExpectedConditions
                 .elementToBeClickable(playlistDeleteBtn));
         js.executeScript("arguments[0].click();", deletePlaylistBtn);
     }
-
     public void assertPlaylistDeleted(String newPlaylist) {
         List<WebElement> playlists = driver.findElements(playlist);
         List<String> playlistNames = new ArrayList<>();
@@ -92,19 +95,16 @@ public class PlaylistPage extends BasePage {
                 .keyDown(Keys.ENTER)
                 .perform();
     }
-
     public void rightClickOnPlaylist() {
         WebElement playlist = wait.until(ExpectedConditions.elementToBeClickable(playlistActive));
         new Actions(driver)
                 .contextClick(playlist)
                 .perform();
     }
-
     public void clickEdit() {
         WebElement editBtn = wait.until(ExpectedConditions.elementToBeClickable(playlistMenuEdit));
         editBtn.click();
     }
-
     public void renamePlaylistName(String newPlaylist) {
         WebElement inputPlaylistName = wait.until(ExpectedConditions
                 .visibilityOfElementLocated(playlistNameEditField));
@@ -113,7 +113,6 @@ public class PlaylistPage extends BasePage {
         inputPlaylistName.sendKeys(newPlaylist);
         inputPlaylistName.sendKeys(Keys.ENTER);
     }
-
     public void assertRenamedPlaylistPresent(String newPlaylist) {
         List<WebElement> playlistNames = driver.findElements(playlist);
         List<String> listOfNames = new ArrayList<>();
